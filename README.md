@@ -10,10 +10,19 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
+
+2. Setup const in a .env file :
+   ```
+   EXPO_PUBLIC_API_URL=# put your API URL here 
+   EXPO_PUBLIC_API_TOKEN=# put your API Token here (OPTIONNAL)
+   ```
+
 2. Start the app
 
    ```bash
     npx expo start
+    ENVFILE=.env.staging react-native run-android
+
    ```
 
 In the output, you'll find options to open the app in a
