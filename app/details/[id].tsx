@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Redirect, useLocalSearchParams } from 'expo-router';
+import Task from '../../components/Task'
 
 
 import axios from 'axios';
@@ -48,7 +49,6 @@ export default function DetailsScreen(){
         name: response.data.name,
         tasks: tasks
       }     
-      console.log(taskList)
       setData(taskList);
     } catch (error) {
       const taskList : TaskList = {
@@ -68,14 +68,18 @@ export default function DetailsScreen(){
   
   return (
     <View style={styles.container}>
-        <div>
-          { data != undefined && data.id == -1 ? (<Redirect href={"/"}></Redirect>) : ("")}
-          {data ? (
-            <Text>Details of : {data.name}</Text>
-          ) :  (<ActivityIndicator size="large" color="rgb(244, 81, 30)" />
-          ) }
-        </div>
-      </View>
+      { data != undefined && data.id == -1 ? (<Redirect href={"/"}></Redirect>) : ("")}
+      {data ? (
+        <View style={styles.taskWrapper}>
+          <><Text style={styles.sectionTitle}>{data.name}</Text></>
+          <View style={styles.items}>
+          {data.tasks.map(task=><Task key={task.id} text={task.content}/>)}
+          </View>
+        </View>
+      ) :  (<View style={styles.taskWrapper}><ActivityIndicator size="large" color="rgb(244, 81, 30)" /></View>
+      ) }
+        
+    </View>
   );
     
   
@@ -84,7 +88,18 @@ export default function DetailsScreen(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#E8EAED'
   },
+  taskWrapper: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+  },
+  sectionTitle:{
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  items:{
+
+  }
 });
