@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, SafeAreaView, ScrollView} from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar} from 'react-native';
+
 
 
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
+
 
 
 type TaskList={
@@ -16,6 +18,8 @@ type TaskLists = Array<TaskList>;
 const App = () => {
   const [data, setData] = useState<TaskLists>(
   );
+
+
 
   const getTaskList = async () => {
     try {
@@ -49,21 +53,24 @@ const App = () => {
   
 
   return (
-    <View style={styles.container}>
+
+    <ScrollView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff"/>
+
           {data ? (
             <View style={styles.taskWrapper}>
               <Text style={styles.sectionTitle}>OPEN KEEP</Text>
                 <View style={styles.items}>
-                {data.map(taskList=>
-                <TodoCard key={taskList.id} id={taskList.id} name={taskList.name}/>
-                )
-                }
+                  {data.map(taskList=>
+                  <TodoCard key={taskList.id} id={taskList.id} name={taskList.name}/>
+                  )
+                  }
                 </View>
             </View>
           ) :  (<ActivityIndicator size="large" color="rgb(244, 81, 30)" />
           ) }
         
-      </View>
+      </ScrollView>
   );
 };
 
@@ -77,9 +84,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   taskWrapper: {
+    paddingTop: 0,
     flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   sectionTitle:{
     fontSize: 24,
@@ -87,12 +94,12 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   items:{
-    flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
     gap: 4,
     alignContent: 'flex-start',
-    justifyContent: 'center'
+    flexGrow: 1, 
+    justifyContent: 'center',
   },
   
 })

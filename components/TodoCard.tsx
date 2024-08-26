@@ -1,24 +1,18 @@
 import { Link } from "expo-router";
 import React from "react";
-import {  Text, StyleSheet, Pressable } from 'react-native';
+import {  Text, StyleSheet } from 'react-native';
 
 const TodoCard = (props: any) => {
 
     return (
-        <Pressable style={styles.card}>
-            <Link  href={{
+            <Link style={styles.card} href={{
             pathname: '/details/[id]',
             params:  {id: props.id},
             }}>
-                
-                    <Text>
-                    {props.name}
-                    </Text>
-                
-            </Link>
-        </Pressable>
-
-            
+                <Text>
+                {props.name}
+                </Text>
+            </Link>       
     )
 }
 
@@ -27,11 +21,14 @@ const styles = StyleSheet.create({
         minWidth: 150,
         maxWidth: 150,
         height: 200,
+        minHeight: 150,
         borderRadius: 5,
         flex: 1,
-        alignItems: 'center',
+        backgroundColor: '#FCDC94',
+        textAlign: 'center',
+        textAlignVertical: 'center',
         justifyContent: 'center',
-        backgroundColor: '#d8e2dc',
+        alignContent: 'center'
     }
 });
 

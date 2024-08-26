@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import Task from '../../components/Task'
@@ -67,7 +67,8 @@ export default function DetailsScreen(){
   
   
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff"  />
       { data != undefined && data.id == -1 ? (<Redirect href={"/"}></Redirect>) : ("")}
       {data ? (
         <View style={styles.taskWrapper}>
@@ -79,7 +80,7 @@ export default function DetailsScreen(){
       ) :  (<View style={styles.taskWrapper}><ActivityIndicator size="large" color="rgb(244, 81, 30)" /></View>
       ) }
         
-    </View>
+    </ScrollView>
   );
     
   
@@ -92,12 +93,13 @@ const styles = StyleSheet.create({
   },
   taskWrapper: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 30,
     paddingHorizontal: 20,
   },
   sectionTitle:{
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 10
   },
   items:{
 
