@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 const Task = (props: any) => {
 
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <TouchableOpacity style={styles.square}></TouchableOpacity>
+                <Pressable style={styles.square}></Pressable>
                 <Text style={styles.itemText}>{props.text}</Text>
             </View>
             <View style={styles.circular}>
@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
          flexDirection : 'row',
          alignItems: 'center',
          justifyContent: 'space-between',
-         marginBottom: 10
+         marginBottom: 10,
+         
 
     },
     itemLeft:{

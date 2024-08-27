@@ -20,7 +20,21 @@ const App = () => {
   );
 
 
-
+  const newTaskList = async () => {
+    const body = "{\"name\":\"\", \"tasks\":[]}";
+    const res = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/task_lists`, body, {
+      headers: {
+        'Content-Type': 'application/ld+json'
+      }
+  })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  
   const getTaskList = async () => {
     try {
       // get datas from API platform
