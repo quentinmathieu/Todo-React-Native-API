@@ -5,6 +5,7 @@ import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar} from 
 
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
+import { Redirect } from 'expo-router';
 
 
 
@@ -18,7 +19,7 @@ type TaskLists = Array<TaskList>;
 const App = () => {
   const [data, setData] = useState<TaskLists>(
   );
-
+  const [status, setStatus] = useState<number>(-1);
 
   const newTaskList = async () => {
     const body = "{\"name\":\"\", \"tasks\":[]}";
@@ -27,11 +28,15 @@ const App = () => {
         'Content-Type': 'application/ld+json'
       }
   })
-    .then(function (response) {
-      console.log(response);
+  .then(function (response) {
+    const pathId: string = Object.values(response.data)[1] as string;
+    const newId = Number(pathId.split('/')[pathId.split('/').length-1]);
+    setStatus(newId)
+    return newId;
     })
     .catch(function (error) {
       console.log(error);
+      return -1;
     });
   }
   
@@ -63,9 +68,13 @@ const App = () => {
 
   useEffect(() => {
     getTaskList();
+    // newTaskList();
   }, [])
-  
 
+  if (status != -1){
+    return <Redirect href={`/details/${status}`}/>
+  } 
+  
   return (
 
     <ScrollView style={styles.container}>
