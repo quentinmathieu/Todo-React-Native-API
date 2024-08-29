@@ -17,14 +17,14 @@ const DeleteCross = (props: any) => {
         await axios.delete(`${process.env.EXPO_PUBLIC_API_URL}/task_lists/${id}`)
         .then(function () {
             if (route.name.includes("details")){
-                console.log('ok')
-
-                setStatus(1)
+                setStatus(1);
+                return 2;
             }
 
             // update the current tasklists container
             const newArray = props.data.filter((taskList:any)=> (taskList.id != id))
             props.stateChanger(newArray)
+            return 1;
         })
         .catch(function (error) {
             console.log(error);
