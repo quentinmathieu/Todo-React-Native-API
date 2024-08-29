@@ -9,8 +9,8 @@ const DeleteCross = (props: any) => {
 
     const deleteTaskList = async (id: number)  =>{
         await axios.delete(`${process.env.EXPO_PUBLIC_API_URL}/task_lists/${id}`)
-        .then(function (response) {
-            console.log('deleted')
+        .then(function () {
+            // update the current tasklists container
             const newArray = props.data.filter((taskList:any)=> (taskList.id != id))
             props.stateChanger(newArray)
         })

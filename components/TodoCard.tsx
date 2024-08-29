@@ -5,12 +5,12 @@ import DeleteCross from '@/components/DeleteCross';
 
 
 const colors = [
-    "rgb(254 240 138)",
-    "rgb(167 243 208)",
-    "rgb(165 243 252)",
-    "rgb(221 214 254)",
-    "rgb(245 208 254)",
-    "rgb(254 205 211)",
+    "#5288c7",
+    "#2a9d8f",
+    "#e9c46a",
+    "#f4a261",
+    "#e76f51",
+    "#ef476f",
 
 ]
 

@@ -3,10 +3,6 @@ import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Press
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
 import { Redirect } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-
-
-
 
 type Task = {
   id: number;
@@ -105,15 +101,8 @@ const App = () => {
                   }
 
                 </View>
-                <Pressable onPress={() => {newTaskList()}}  style={{zIndex: 99999 }}>
-                  <LinearGradient
-                    colors={['#ffa69e', '#faf3dd']}
-                    start={{x: 0.1, y: 0}}
-                  
-                    style={styles.addBtn}
-                    >
-                    <Text style={styles.addBtnText}>+</Text>
-                  </LinearGradient>
+                <Pressable onPress={() => {newTaskList()}} style={styles.addBtn}>
+                    <Text style={styles.addBtnText}>New</Text>
                 </Pressable>
                 
             </View>
@@ -152,10 +141,15 @@ const styles = StyleSheet.create({
   },
 
   addBtn: {
+    backgroundColor: '#c3c3c3',
+    borderWidth: 3,
+    borderTopColor: '#dbd9d9',
+    borderLeftColor: '#dbd9d9',
+    borderBottomColor: '#6e6e6e',
+    borderRightColor: '#6e6e6e',
     minWidth: 70,
-    minHeight: 70,
+    minHeight: 30,
     margin: 10,
-    borderRadius: 40,
     flex: 1,
     textAlign: 'center',
     overflow: 'hidden',
@@ -165,11 +159,10 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 10,
     zIndex: 99,
+    borderRadius: 20
   },
   addBtnText:{
-    color: "white",
-    fontWeight: 'bold',
-    fontSize: 25
+    color: "black",
   },
   
 })
