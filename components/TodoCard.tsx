@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
     card: {
         minWidth: 150,
         maxWidth: 150,
-        minHeight: 80,
+        minHeight: 50,
         borderRadius: 10,
         flex: 1,
         textAlign: 'center',
-        backgroundColor: 'transparent',
         borderColor: '#FDEECC',
         borderWidth: 2,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: 'transparent'
 
     },
     header:{
@@ -42,7 +42,10 @@ const styles = StyleSheet.create({
         minHeight: 35,
         maxHeight: 35,
         overflow: "hidden",
-        paddingTop: 5
+        paddingTop: 5,
+        borderTopEndRadius: 10,
+        borderTopStartRadius: 10,
+
     },
     headerText:{
         flex: 1,
