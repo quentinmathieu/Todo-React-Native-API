@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Press
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
 import { Redirect } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 
@@ -78,21 +79,38 @@ const App = () => {
             <View style={styles.taskWrapper}>
               <Text style={styles.sectionTitle}>OPEN KEEP</Text>
                 <View style={styles.items}>
+                <Pressable  onPress={() => {newTaskList()}}>
+                  <LinearGradient
+                    colors={['#fcd2af', '#e5d0e3']}
+                    start={{x: 0.7, y: 0}}
+                    end={{x: 0, y: 1}}
+                  
+                    style={styles.addBtn}
+                    >
+                    <Text style={styles.addBtnText}>+</Text>
+                  </LinearGradient>
+                </Pressable>
                   {data.map(taskList=>
                   <TodoCard key={taskList.id} id={taskList.id} name={taskList.name}/>
                   )
                   }
+                <Pressable  onPress={() => {newTaskList()}}>
+                  <LinearGradient
+                    colors={['#fcd2af', '#e5d0e3']}
+                    start={{x: 0.7, y: 0}}
+                    end={{x: 0, y: 1}}
+                  
+                    style={styles.addBtn}
+                    >
+                    <Text style={styles.addBtnText}>+</Text>
+                  </LinearGradient>
+                </Pressable>
                 
                 </View>
             </View>
+            
           ) :  (<ActivityIndicator size="large" color="rgb(244, 81, 30)" />
           ) }
-        
-      <Pressable
-                  onPress={() => {newTaskList()}}
-                  style={styles.addBtn}>
-                  <Text>+</Text>
-                </Pressable>
       </ScrollView>
       );
 };
@@ -106,14 +124,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   taskWrapper: {
-    paddingTop: 0,
+    paddingTop: 10,
     flex: 1,
     paddingHorizontal: 5,
   },
   sectionTitle:{
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 30
   },
   items:{
     flexWrap: 'wrap',
@@ -123,17 +141,24 @@ const styles = StyleSheet.create({
     flexGrow: 1, 
     justifyContent: 'center',
     zIndex: 999
-
   },
-  addBtn:{
-    backgroundColor: "#EFEFEF",
-    width: 60,
-    height: 60,
-    borderRadius: 60,
+
+  addBtn: {
+    minWidth: 150,
+    maxWidth: 150,
+    minHeight: 50,
+    borderRadius: 10,
+    flex: 1,
+    textAlign: 'center',
+    overflow: 'hidden',
+    
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    position: 'absolute',
+  },
+  addBtnText:{
+    color: "#5e5e5e",
+    fontWeight: 'bold'
   },
   
 })
