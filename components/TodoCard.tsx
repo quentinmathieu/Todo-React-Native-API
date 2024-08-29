@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
-import React from "react";
-import {  Text, StyleSheet } from 'react-native';
+import React, {  } from "react";
+import {  Text, StyleSheet, View } from 'react-native';
+
 
 const TodoCard = (props: any) => {
 
@@ -9,10 +10,14 @@ const TodoCard = (props: any) => {
             pathname: '/details/[id]',
             params:  {id: props.id},
             }}>
-                <Text>
-                {props.name}
+                <View style={styles.header}>
+                <Text style={styles.headerText}>
+                {props.name ? props.name : " "}
                 </Text>
-            </Link>       
+                </View>
+                
+            </Link>
+             
     )
 }
 
@@ -20,16 +25,35 @@ const styles = StyleSheet.create({
     card: {
         minWidth: 150,
         maxWidth: 150,
-        height: 200,
-        minHeight: 150,
-        borderRadius: 5,
+        minHeight: 80,
+        borderRadius: 10,
         flex: 1,
-        backgroundColor: '#FCDC94',
         textAlign: 'center',
-        textAlignVertical: 'center',
-        justifyContent: 'center',
-        alignContent: 'center'
-    }
+        backgroundColor: 'transparent',
+        borderColor: '#FDEECC',
+        borderWidth: 2,
+        overflow: 'hidden'
+
+    },
+    header:{
+        backgroundColor: '#FDEECC',
+        minWidth: 150,
+        maxWidth: 150,
+        minHeight: 35,
+        maxHeight: 35,
+        overflow: "hidden",
+        paddingTop: 5
+    },
+    headerText:{
+        flex: 1,
+        fontWeight: "bold",
+        flexWrap: "nowrap",
+        overflow: "hidden",
+        maxHeight : 35,
+        lineHeight: 25,
+        textAlign: 'center'
+
+    }  
 });
 
 export default TodoCard;

@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar} from 'react-native';
-
-
-
+import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Pressable} from 'react-native';
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
 import { Redirect } from 'expo-router';
@@ -23,7 +20,7 @@ const App = () => {
 
   const newTaskList = async () => {
     const body = "{\"name\":\"\", \"tasks\":[]}";
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/task_lists`, body, {
+    await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/task_lists`, body, {
       headers: {
         'Content-Type': 'application/ld+json'
       }
@@ -68,7 +65,6 @@ const App = () => {
 
   useEffect(() => {
     getTaskList();
-    // newTaskList();
   }, [])
 
   if (status != -1){
@@ -76,10 +72,8 @@ const App = () => {
   } 
   
   return (
-
     <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff"/>
-
           {data ? (
             <View style={styles.taskWrapper}>
               <Text style={styles.sectionTitle}>OPEN KEEP</Text>
@@ -88,13 +82,19 @@ const App = () => {
                   <TodoCard key={taskList.id} id={taskList.id} name={taskList.name}/>
                   )
                   }
+                
                 </View>
             </View>
           ) :  (<ActivityIndicator size="large" color="rgb(244, 81, 30)" />
           ) }
         
+      <Pressable
+                  onPress={() => {newTaskList()}}
+                  style={styles.addBtn}>
+                  <Text>+</Text>
+                </Pressable>
       </ScrollView>
-  );
+      );
 };
 
 const styles = StyleSheet.create({
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
     marginBottom: 20,
   },
   taskWrapper: {
@@ -123,6 +122,18 @@ const styles = StyleSheet.create({
     alignContent: 'flex-start',
     flexGrow: 1, 
     justifyContent: 'center',
+    zIndex: 999
+
+  },
+  addBtn:{
+    backgroundColor: "#EFEFEF",
+    width: 60,
+    height: 60,
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    position: 'absolute',
   },
   
 })
