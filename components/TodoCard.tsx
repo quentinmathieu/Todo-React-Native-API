@@ -1,6 +1,8 @@
 import { Link } from "expo-router";
 import React, {  } from "react";
 import {  Text, StyleSheet, View } from 'react-native';
+import DeleteCross from '@/components/DeleteCross';
+
 
 const colors = [
     "rgb(254 240 138)",
@@ -20,23 +22,33 @@ const TodoCard = (props: any) => {
     let tempTasks = props.tasklist.tasks.slice(0,3)
     
     return (
-            <Link style={styles(props).card} href={{
-            pathname: '/details/[id]',
-            params:  {id: props.tasklist.id},
-            }}>
+            <View style={styles(props).card}>
                 <View style={styles(props).header}>
-                <Text style={styles(props).headerText}>
-                {props.tasklist.name ? props.tasklist.name : " "}
-                </Text>
+                    <Link href={{
+                    pathname: '/details/[id]',
+                    params:  {id: props.tasklist.id},
+                    }}>
+                        <Text style={styles(props).headerText}>
+                        {props.tasklist.name ? props.tasklist.name : " "}
+                        </Text>
+                    </Link>
+                    <DeleteCross key={`${props.tasklist.id}deleteCross`} style={styles(props).headerText} tasklist={props.tasklist} stateChanger={props.stateChanger} data={props.data}/>
                 </View>
-                <View style={styles(props).body}>
+                <Link  href={{
+                pathname: '/details/[id]',
+                params:  {id: props.tasklist.id},
+                }}>
+                    <View  style={styles(props).body}>
+
                     {tempTasks.map((task:Task)=>
                         <Text key={task.id} style={styles(props).bodyText}>• {task.content}</Text>
                     )
                   }
-                 {(props.tasklist.tasks.length > 3) ?<Text style={styles(props).bodyText}>• ...</Text>: <></>}
-                 </View>
-            </Link>
+                 {(props.tasklist.tasks.length > 3) ?<Text style={styles(props).bodyText}>• ...</Text>: <></>}  
+                    </View>
+                 </Link>
+                 
+            </View>
              
     )
 }
@@ -56,13 +68,15 @@ const styles =  (props: any) =>  StyleSheet.create({
     },
     header:{
         backgroundColor: colors[props.tasklist.color],
-        width: "100%",
+        width: 150,
         height: 35,
         overflow: "hidden",
         paddingTop: 5,
         borderTopEndRadius: 10,
         borderTopStartRadius: 10,
-
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10
     },
     headerText:{
         flex: 1,
@@ -71,7 +85,6 @@ const styles =  (props: any) =>  StyleSheet.create({
         overflow: "hidden",
         maxHeight : 35,
         lineHeight: 25,
-        paddingHorizontal: 10
     } ,
     body:{
         minHeight: 30,

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Pressable, Alert} from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Pressable} from 'react-native';
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
 import { Redirect } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+
 
 
 
@@ -86,14 +87,6 @@ const App = () => {
     getTaskList();
   }, [])
 
-  Alert.alert(
-    'Alert Title',
-    'My Alert Msg', // <- this part is optional, you can pass an empty string
-    [
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ],
-    {cancelable: false},
-  );
 
   if (status != -1){
     return <Redirect href={`/details/${status}`}/>
@@ -107,12 +100,12 @@ const App = () => {
               <Text style={styles.sectionTitle}>OPEN KEEP</Text>
                 <View style={styles.items}>
                   {data.map(taskList=>
-                  <TodoCard key={taskList.id} tasklist={taskList}/>
+                    <TodoCard key={taskList.id} tasklist={taskList} stateChanger={setData} data={data}/>
                   )
                   }
-                
+
                 </View>
-                <Pressable  onPress={() => {newTaskList()}}>
+                <Pressable onPress={() => {newTaskList()}}  style={{zIndex: 99999 }}>
                   <LinearGradient
                     colors={['#ffa69e', '#faf3dd']}
                     start={{x: 0.1, y: 0}}
@@ -155,6 +148,7 @@ const styles = StyleSheet.create({
     alignContent: 'flex-start',
     flexGrow: 1, 
     justifyContent: 'center',
+    marginBottom: 20
   },
 
   addBtn: {
@@ -168,9 +162,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    position: 'absolute',
     right: 30,
     bottom: 10,
+    zIndex: 99,
   },
   addBtnText:{
     color: "white",
