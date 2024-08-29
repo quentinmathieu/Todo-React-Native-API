@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Pressable} from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Pressable, Alert} from 'react-native';
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
 import { Redirect } from 'expo-router';
@@ -7,10 +7,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 
-type TaskList={
-  id:number,
-  name: string
+type Task = {
+  id: number;
+  content: string;
 }
+
+type TaskList = {
+  id: number;
+  name: string;
+  tasks: Array<Task>;
+  color: number;
+};
 
 type TaskLists = Array<TaskList>;
 
@@ -50,12 +57,23 @@ const App = () => {
       // put each tasklist in the taskLists array
       response.data["hydra:member"].forEach((taskList: any) => {
         const pathId: string = Object.values(taskList)[0] as string;
-        const tempTask:TaskList = {
+        let tempTaskList:TaskList = {
           // ISSUE : can't get "@id" because of the '@'
           id: Number(pathId.split('/')[pathId.split('/').length-1]),
           name: taskList.name,
+          tasks: [],
+          color: Math.floor(Math.random() * 5)
         }
-        taskLists.push(tempTask)
+        taskList.tasks.forEach((task: any) => {
+          // ISSUE : can't get "@id" because of the '@'
+          const pathId: string = Object.values(task)[0] as string;
+          const tempTask:Task = {
+            id: Number(pathId.split('/')[pathId.split('/').length-1]),
+            content: task.content,
+          }
+          tempTaskList.tasks.push(tempTask)
+        })
+        taskLists.push(tempTaskList)
       })
       setData(taskLists);
     } catch (error) {
@@ -68,6 +86,15 @@ const App = () => {
     getTaskList();
   }, [])
 
+  Alert.alert(
+    'Alert Title',
+    'My Alert Msg', // <- this part is optional, you can pass an empty string
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ],
+    {cancelable: false},
+  );
+
   if (status != -1){
     return <Redirect href={`/details/${status}`}/>
   } 
@@ -79,26 +106,16 @@ const App = () => {
             <View style={styles.taskWrapper}>
               <Text style={styles.sectionTitle}>OPEN KEEP</Text>
                 <View style={styles.items}>
-                <Pressable  onPress={() => {newTaskList()}}>
-                  <LinearGradient
-                    colors={['#fcd2af', '#e5d0e3']}
-                    start={{x: 0.7, y: 0}}
-                    end={{x: 0, y: 1}}
-                  
-                    style={styles.addBtn}
-                    >
-                    <Text style={styles.addBtnText}>+</Text>
-                  </LinearGradient>
-                </Pressable>
                   {data.map(taskList=>
-                  <TodoCard key={taskList.id} id={taskList.id} name={taskList.name}/>
+                  <TodoCard key={taskList.id} tasklist={taskList}/>
                   )
                   }
+                
+                </View>
                 <Pressable  onPress={() => {newTaskList()}}>
                   <LinearGradient
-                    colors={['#fcd2af', '#e5d0e3']}
-                    start={{x: 0.7, y: 0}}
-                    end={{x: 0, y: 1}}
+                    colors={['#ffa69e', '#faf3dd']}
+                    start={{x: 0.1, y: 0}}
                   
                     style={styles.addBtn}
                     >
@@ -106,7 +123,6 @@ const App = () => {
                   </LinearGradient>
                 </Pressable>
                 
-                </View>
             </View>
             
           ) :  (<ActivityIndicator size="large" color="rgb(244, 81, 30)" />
@@ -120,7 +136,6 @@ const styles = StyleSheet.create({
       flex: 1,
   },
   container: {
-    flex: 1,
     marginBottom: 20,
   },
   taskWrapper: {
@@ -140,25 +155,27 @@ const styles = StyleSheet.create({
     alignContent: 'flex-start',
     flexGrow: 1, 
     justifyContent: 'center',
-    zIndex: 999
   },
 
   addBtn: {
-    minWidth: 150,
-    maxWidth: 150,
-    minHeight: 50,
-    borderRadius: 10,
+    minWidth: 70,
+    minHeight: 70,
+    margin: 10,
+    borderRadius: 40,
     flex: 1,
     textAlign: 'center',
     overflow: 'hidden',
-    
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-end',
+    position: 'absolute',
+    right: 30,
+    bottom: 10,
   },
   addBtnText:{
-    color: "#5e5e5e",
-    fontWeight: 'bold'
+    color: "white",
+    fontWeight: 'bold',
+    fontSize: 25
   },
   
 })
