@@ -76,11 +76,11 @@ export default function DetailsScreen(){
         <View style={styles.taskWrapper}>
           <>
           
-          <Text style={styles.sectionTitle}><Link href={{
+          <View style={styles.sectionTitle}><Link href={{
                     pathname: '/',
                     }}  >
                       <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
-          </Link>{data.name}</Text> <DeleteCross tasklist={data}/></>
+          </Link>{data.name}<DeleteCross tasklist={data}/></View> </>
           <View style={styles.items}>
           {data.tasks.map(task=><Task key={task.id} text={task.content}/>)}
           </View>
@@ -108,6 +108,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%"
   },
   items:{
 
