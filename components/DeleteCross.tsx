@@ -1,15 +1,27 @@
-import React, { useState } from "react";
-import {  Text, StyleSheet, View, Pressable } from 'react-native';
+import {  Text, StyleSheet,  Pressable } from 'react-native';
 import alert from './../hooks/alert'
 import axios from 'axios'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Redirect } from 'expo-router';
+import { useRoute } from '@react-navigation/native';
+import { useState } from 'react';
+
+
 
 
 const DeleteCross = (props: any) => {
+    const [status, setStatus] = useState<number>(0);
+    const route = useRoute();
 
     const deleteTaskList = async (id: number)  =>{
         await axios.delete(`${process.env.EXPO_PUBLIC_API_URL}/task_lists/${id}`)
         .then(function () {
+            if (route.name.includes("details")){
+                console.log('ok')
+
+                setStatus(1)
+            }
+
             // update the current tasklists container
             const newArray = props.data.filter((taskList:any)=> (taskList.id != id))
             props.stateChanger(newArray)
@@ -23,14 +35,18 @@ const DeleteCross = (props: any) => {
     const confirmDelete = () =>
         {
           alert(
-            'Add a task list',
+            'Delete a list',
             '',
             [
-              {text: 'Add', onPress: () => deleteTaskList(props.tasklist.id)},
+              {text: 'Delete', onPress: () => deleteTaskList(props.tasklist.id)},
             ],
             {cancelable: true},
           );
         }
+
+    if(status == 1){
+        return (<Redirect href={'/'} />)
+    }
       
 
     return(

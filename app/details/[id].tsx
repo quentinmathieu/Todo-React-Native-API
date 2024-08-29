@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, ActivityIndicator, StatusBar, ScrollView } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import { Redirect, useLocalSearchParams } from 'expo-router';
+import { Link, Redirect, useLocalSearchParams } from 'expo-router';
 import Task from '../../components/Task'
-
+import Ionicons from '@expo/vector-icons/Ionicons';
+import DeleteCross from '@/components/DeleteCross';
 
 import axios from 'axios';
 
@@ -17,6 +18,7 @@ type TaskList = {
   name: string;
   tasks: Array<Task>;
 };
+
 
 export default function DetailsScreen(){
 
@@ -72,7 +74,13 @@ export default function DetailsScreen(){
       { data != undefined && data.id == -1 ? (<Redirect href={"/"}></Redirect>) : ("")}
       {data ? (
         <View style={styles.taskWrapper}>
-          <><Text style={styles.sectionTitle}>{data.name}</Text></>
+          <>
+          
+          <Text style={styles.sectionTitle}><Link href={{
+                    pathname: '/',
+                    }}  >
+                      <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
+          </Link>{data.name}</Text> <DeleteCross tasklist={data}/></>
           <View style={styles.items}>
           {data.tasks.map(task=><Task key={task.id} text={task.content}/>)}
           </View>
@@ -89,7 +97,7 @@ export default function DetailsScreen(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E8EAED',
+    // backgroundColor: '#E8EAED',
   },
   taskWrapper: {
     flex: 1,
@@ -99,7 +107,7 @@ const styles = StyleSheet.create({
   sectionTitle:{
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10
+    marginBottom: 10,
   },
   items:{
 
