@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, ActivityIndicator, ScrollView, StatusBar, Press
 import axios from 'axios';
 import TodoCard from '@/components/TodoCard';
 import { Redirect } from 'expo-router';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import Toast from 'react-native-root-toast';
 
 type Task = {
   id: number;
@@ -34,9 +36,15 @@ const App = () => {
     const pathId: string = Object.values(response.data)[1] as string;
     const newId = Number(pathId.split('/')[pathId.split('/').length-1]);
     setStatus(newId)
+    Toast.show('List deleted', {
+      duration: Toast.durations.LONG,
+    });
     return newId;
     })
     .catch(function (error) {
+      Toast.show('Add failed', {
+        duration: Toast.durations.LONG,
+      });
       console.log(error);
       return -1;
     });
@@ -89,6 +97,7 @@ const App = () => {
   } 
   
   return (
+    <RootSiblingParent>
     <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff"/>
           {data ? (
@@ -101,15 +110,17 @@ const App = () => {
                   }
 
                 </View>
-                <Pressable onPress={() => {newTaskList()}} style={styles.addBtn}>
-                    <Text style={styles.addBtnText}>New</Text>
-                </Pressable>
+               
                 
             </View>
             
           ) :  (<ActivityIndicator size="large" color="rgb(244, 81, 30)" />
           ) }
       </ScrollView>
+      <Pressable onPress={() => {newTaskList()}} style={styles.addBtn}>
+                    <Text style={styles.addBtnText}>New</Text>
+      </Pressable>
+      </RootSiblingParent>
       );
 };
 
@@ -147,8 +158,9 @@ const styles = StyleSheet.create({
     borderLeftColor: '#dbd9d9',
     borderBottomColor: '#6e6e6e',
     borderRightColor: '#6e6e6e',
-    minWidth: 70,
-    minHeight: 30,
+    minWidth: 100,
+    minHeight: 40,
+    maxHeight: 40,
     margin: 10,
     flex: 1,
     textAlign: 'center',
@@ -157,9 +169,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'flex-end',
     right: 30,
-    bottom: 10,
+    bottom: 50,
     zIndex: 99,
-    borderRadius: 20
+    borderRadius: 40,
+    position: 'absolute'
   },
   addBtnText:{
     color: "black",

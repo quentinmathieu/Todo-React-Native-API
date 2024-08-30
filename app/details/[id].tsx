@@ -4,6 +4,8 @@ import { Link, Redirect, useLocalSearchParams } from 'expo-router';
 import Task from '../../components/Task'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import DeleteCross from '@/components/DeleteCross';
+import { RootSiblingParent } from 'react-native-root-siblings';
+
 
 import axios from 'axios';
 
@@ -18,6 +20,7 @@ type TaskList = {
   name: string;
   tasks: Array<Task>;
 };
+
 
 
 export default function DetailsScreen(){
@@ -69,26 +72,28 @@ export default function DetailsScreen(){
   
   
   return (
+    <RootSiblingParent>
     <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff"  />
       { data != undefined && data.id == -1 ? (<Redirect href={"/"}></Redirect>) : ("")}
       {data ? (
-        <View style={styles.taskWrapper}>
-          <>
-          
+        <View style={styles.taskWrapper}>          
           <View style={styles.sectionTitle}><Link href={{
                     pathname: '/',
                     }}  >
-                      <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
-          </Link>{data.name}<DeleteCross tasklist={data}/></View> </>
+            <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
+          </Link><Text style={styles.title}>{data.name}</Text><DeleteCross tasklist={data}/></View>
           <View style={styles.items}>
-          {data.tasks.map(task=><Task key={task.id} text={task.content}/>)}
+          {data.tasks.map(task=><Task key={task.id} text={task.content} data={data} id={task.id} stateChanger={setData}/>)}
           </View>
         </View>
       ) :  (<View style={styles.taskWrapper}><ActivityIndicator size="large" color="rgb(244, 81, 30)" /></View>
       ) }
         
     </ScrollView>
+    <Text>Test !</Text>
+    </RootSiblingParent>
+
   );
     
   
@@ -115,5 +120,9 @@ const styles = StyleSheet.create({
   },
   items:{
 
+  },
+  title:{
+    fontSize: 20,
+    fontWeight: 'bold',
   }
 });

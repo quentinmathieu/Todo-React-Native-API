@@ -76,24 +76,26 @@ const styles =  (props: any) =>  StyleSheet.create({
         borderTopStartRadius: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 10
     },
     headerText:{
-        flex: 1,
         fontWeight: "bold",
         flexWrap: "nowrap",
         overflow: "hidden",
-        maxHeight : 35,
+        height : 35,
         lineHeight: 25,
+        // minwidth doesnt work !!
+        minWidth: 100,
+        paddingLeft: 10,
     } ,
     body:{
-        minHeight: 30,
+        minHeight: 70,
         width: '100%',
         textAlign: 'left',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
     },
     bodyText:{
-        color: "gray"
+        color: "gray",
+
     },
 });
 

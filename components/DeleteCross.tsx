@@ -5,6 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Redirect } from 'expo-router';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
+import Toast from 'react-native-root-toast';
 
 
 
@@ -24,9 +25,15 @@ const DeleteCross = (props: any) => {
             // update the current tasklists container
             const newArray = props.data.filter((taskList:any)=> (taskList.id != id))
             props.stateChanger(newArray)
+            Toast.show('List deleted', {
+                duration: Toast.durations.LONG,
+              });
             return 1;
         })
         .catch(function (error) {
+            Toast.show('Delete failed', {
+                duration: Toast.durations.LONG,
+              });
             console.log(error);
             return -1;
         });
@@ -65,6 +72,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         maxHeight : 35,
         lineHeight: 25,
+        paddingRight: 10
     } 
 });
 
