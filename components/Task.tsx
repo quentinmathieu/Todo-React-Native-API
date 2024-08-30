@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-root-toast';
 import axios from 'axios'
 
+
+type TaskData = {
+    id: number;
+    content: string;
+  }
+
+type TaskList = {
+    id: number;
+    name: string;
+    tasks: Array<TaskData>;
+  };
 
 const Task = (props: any) => {
 
@@ -12,11 +23,12 @@ const Task = (props: any) => {
 
             await axios.delete(`${process.env.EXPO_PUBLIC_API_URL}/tasks/${id}`)
             .then(function () {
-                console.log(props.data.tasks.length)
-                const newArray = props.data.tasks.filter((task:any)=> (task.id != id));
-                const newData = props.data;
-                newData.tasks = newArray;
-                console.log(newData.tasks.length)
+                const newData:TaskList = {
+                    id: props.data.id,
+                    name: props.data.name,
+                    tasks: props.data.tasks
+                }
+                newData.tasks = props.data.tasks.filter((task:any)=> (task.id != id));
                 props.stateChanger(newData);
                 Toast.show('Task completed !', {
                     duration: Toast.durations.LONG,
@@ -37,7 +49,7 @@ const Task = (props: any) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <MaterialCommunityIcons name="drag" size={24} color="black" />
+                <MaterialCommunityIcons name="drag" size={35} color="black" />
                 
                 <Text style={styles.itemText}>{props.text}</Text>
             </View>
@@ -51,7 +63,6 @@ const Task = (props: any) => {
 const styles = StyleSheet.create({
     item:{
         backgroundColor: 'white',
-        padding: 15,
         flexDirection : 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -79,10 +90,9 @@ const styles = StyleSheet.create({
         maxWidth: "80%"
     },
     square:{
-        width: 30,
-        height: 30,
-        backgroundColor: "#55BCF6",
-        opacity: 0.4,
+        width: 25,
+        height: 25,
+        backgroundColor: "#5288c7",
         borderRadius: 2,
         marginRight: 5,
 
