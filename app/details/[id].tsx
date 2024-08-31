@@ -146,51 +146,50 @@ export default function DetailsScreen(){
   
   return (
     <RootSiblingParent>
-    <ScrollView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff"  />
-      { data != undefined && data.id == -1 ? (<Redirect href={"/"}></Redirect>) : ("")}
-      {data ? (
-        <View style={styles.taskWrapper}>          
-          <View style={styles.sectionTitle}><Link href={{
-                    pathname: '/',
-          }}>
-            <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
-          </Link>
-          <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? "padding" : "height"} 
-      >
-          
-        <TextInput style={styles.title} placeholder={"Put a title"} onChangeText={text => updateName(text)} value={title} />
-      
-      
-    </KeyboardAvoidingView>
-          <DeleteCross tasklist={data}/></View>
-          <View style={styles.items}>
-          {data.tasks.map(task=><Task key={task.id} text={task.content} data={data} id={task.id} stateChanger={setData}/>)}
-          </View>
-        </View>
-      ) :  (<View style={styles.taskWrapper}><ActivityIndicator size="large" color="rgb(244, 81, 30)" /></View>
-      ) }
-        
-    </ScrollView>
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? "padding" : "height"} 
-      >
-    <LinearGradient
-        // Button Linear Gradient
-        colors={['rgba(255,255,255,0)','rgba(255,255,255,0.5)','rgba(255,255,255,1)', 'rgba(255,255,255,1)']} style={styles.writeTaskWrapper}
-        >
-          
-        <TextInput style={styles.input} placeholder={"Write a task"} onChangeText={text => setNewTask(text)} value={newTask} />
-        <Pressable onPress={() => handleAddTask()}>
-            <View style={styles.addWrapper}>
-              <Text style={styles.addText}>Add</Text>
+      <ScrollView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff"  />
+        { data != undefined && data.id == -1 ? (<Redirect href={"/"}/>) : (<></>)}
+        {data ? (
+          <View style={styles.taskWrapper}>          
+            <View style={styles.sectionTitle}>
+              <Link href={{
+                      pathname: '/',
+              }}>
+                <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
+              </Link>
+              <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? "padding" : "height"} 
+              >
+                <TextInput style={styles.title} placeholder={"Put a title"} onChangeText={text => updateName(text)} value={title} />
+              </KeyboardAvoidingView>
+              <DeleteCross tasklist={data}/>
             </View>
-        </Pressable>
-      </LinearGradient>
-      
-      
-    </KeyboardAvoidingView>
+            <View style={styles.items}>
+            {data.tasks.map(task=><Task key={task.id} text={task.content} data={data} id={task.id} stateChanger={setData}/>)}
+            </View>
+          </View>
+        ) :  (<View style={styles.taskWrapper}><ActivityIndicator size="large" color="rgb(244, 81, 30)" /></View>
+        ) }
+          
+      </ScrollView>
+      <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? "padding" : "height"} 
+      >
+        <LinearGradient
+          // Button Linear Gradient
+          colors={['rgba(255,255,255,0)','rgba(255,255,255,0.5)','rgba(255,255,255,1)', 'rgba(255,255,255,1)']} style={styles.writeTaskWrapper}
+          >
+            
+          <TextInput style={styles.input} placeholder={"Write a task"} onChangeText={text => setNewTask(text)} value={newTask} />
+          <Pressable onPress={() => handleAddTask()}>
+              <View style={styles.addWrapper}>
+                <Text style={styles.addText}>Add</Text>
+              </View>
+          </Pressable>
+        </LinearGradient>
+        
+        
+      </KeyboardAvoidingView>
     </RootSiblingParent>
 
   );
