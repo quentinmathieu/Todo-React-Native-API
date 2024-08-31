@@ -31,7 +31,7 @@ const Task = (props: any) => {
                 newData.tasks = props.data.tasks.filter((task:any)=> (task.id != id));
                 props.stateChanger(newData);
                 Toast.show('Task completed !', {
-                    duration: Toast.durations.LONG,
+                    duration: Toast.durations.SHORT,
                 });
                 return 1;
             })

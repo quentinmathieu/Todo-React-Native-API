@@ -37,7 +37,7 @@ const App = () => {
     const newId = Number(pathId.split('/')[pathId.split('/').length-1]);
     setStatus(newId)
     Toast.show('List deleted', {
-      duration: Toast.durations.LONG,
+      duration: Toast.durations.SHORT,
     });
     return newId;
     })

@@ -31,13 +31,11 @@ export default function DetailsScreen(){
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<TaskList>();
   const [newTask, setNewTask] = useState("");
+  const [title, setTitle] = useState((data) ?  data.name : "");
 
   const handleAddTask = async () => {
     if (data){
-      const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/tasks`
-      );
-      const body = `{\"${newTask}\":\"\", \"taskList\":\"/api/task_lists/${data.id}\"}`;
+      const body = `{"content":"${newTask}", "taskList":"/api/task_lists/${data.id}"}`;
       await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/tasks`, body, {
         headers: {
           'Content-Type': 'application/ld+json'
@@ -46,15 +44,18 @@ export default function DetailsScreen(){
     .then(function (response) {
       const pathId: string = Object.values(response.data)[1] as string;
       const newId = Number(pathId.split('/')[pathId.split('/').length-1]);
-      // let arrayTasks = data.tasks;
-      // const newTaskData:TaskData = {
-      //   id: newId,
-      //   content: newTask
-      // }
-      // arrayTasks.push();
-      // data.tasks = arrayTasks;
-      // setData(data);
-      console.log(newId)
+      const newTaskData:TaskData = {
+        id: newId,
+        content: newTask
+      }
+      const newData:TaskList = {
+        id: data.id,
+        name: data.name,
+        tasks: data.tasks
+      }
+      newData.tasks.push(newTaskData);
+      setData(newData);
+      setNewTask("");
 
       Toast.show('Task added', {
         duration: Toast.durations.SHORT,
@@ -70,6 +71,34 @@ export default function DetailsScreen(){
       });
     }
    
+  }
+
+  const updateName = async (text:any)  =>{
+    setTitle(text);
+    if (data){
+      const body = `{"name":"${text}"}`;
+      await axios.put(`${process.env.EXPO_PUBLIC_API_URL}/task_lists/${data.id}`, body, {
+        headers: {
+          'Content-Type': 'application/ld+json'
+        }
+    })
+    .then(function (response) {
+      const newData:TaskList = {
+        id: data.id,
+        name: text,
+        tasks: data.tasks
+      }
+      setData(newData);
+      return 1;
+      })
+      .catch(function (error) {
+        Toast.show('Add failed', {
+          duration: Toast.durations.LONG,
+        });
+        console.log(error);
+        return -1;
+      });
+    }
   }
 
   const getTasks = async () => {
@@ -98,6 +127,7 @@ export default function DetailsScreen(){
         tasks: tasks
       }     
       setData(taskList);
+      setTitle(response.data.name);
     } catch (error) {
       const taskList : TaskList = {
         id: -1,
@@ -125,7 +155,16 @@ export default function DetailsScreen(){
                     pathname: '/',
           }}>
             <Ionicons name="arrow-back-circle-sharp" size={28} color="black" style={{verticalAlign: 'bottom', marginRight: 10}}/>
-          </Link><Text style={styles.title}>{data.name}</Text><DeleteCross tasklist={data}/></View>
+          </Link>
+          <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? "padding" : "height"} 
+      >
+          
+        <TextInput style={styles.title} placeholder={"Put a title"} onChangeText={text => updateName(text)} value={title} />
+      
+      
+    </KeyboardAvoidingView>
+          <DeleteCross tasklist={data}/></View>
           <View style={styles.items}>
           {data.tasks.map(task=><Task key={task.id} text={task.content} data={data} id={task.id} stateChanger={setData}/>)}
           </View>
@@ -135,17 +174,14 @@ export default function DetailsScreen(){
         
     </ScrollView>
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? "padding" : "height"}
-        
+      behavior={Platform.OS === 'ios' ? "padding" : "height"} 
       >
     <LinearGradient
         // Button Linear Gradient
         colors={['rgba(255,255,255,0)','rgba(255,255,255,0.5)','rgba(255,255,255,1)', 'rgba(255,255,255,1)']} style={styles.writeTaskWrapper}
         >
           
-        <TextInput style={styles.input} placeholder={"Write a task"} onChangeText={text => setNewTask(text)} value={newTask} >
-
-        </TextInput>
+        <TextInput style={styles.input} placeholder={"Write a task"} onChangeText={text => setNewTask(text)} value={newTask} />
         <Pressable onPress={() => handleAddTask()}>
             <View style={styles.addWrapper}>
               <Text style={styles.addText}>Add</Text>
@@ -188,6 +224,7 @@ const styles = StyleSheet.create({
   title:{
     fontSize: 20,
     fontWeight: 'bold',
+    minWidth: 250
   },
   writeTaskWrapper :{
     position: 'absolute',
